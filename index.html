@@ -20,11 +20,29 @@
 </style>
 </head>
 <body>
+
 <img src="lizard.png" id="mark">
+
 <script>
   const mark = document.getElementById('mark');
+
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth(); // 0=Jan, 8=Sep, 9=Oct, 11=Dec
+
+  if (day === 25 && month === 11) {
+    // 🎄 Christmas Day (December 25)
+    mark.src = "markmas.png";
+  } else if (day === 31 && month === 9) {
+    // 🎃 Halloween (October 31)
+    mark.src = "markhalloween.png";
+  } else {
+    // Normal day
+    mark.src = "lizard.png";
+  }
+
   let x = 50, y = 50;
-  
+
   function moveMark() {
     const dx = Math.floor(Math.random() * 41) - 20; // -20 to 20
     const dy = Math.floor(Math.random() * 41) - 20;
@@ -36,5 +54,6 @@
 
   setInterval(moveMark, 500);
 </script>
+
 </body>
 </html>

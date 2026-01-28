@@ -10,6 +10,7 @@
     background: url('house_background.png') no-repeat center/cover;
     overflow: hidden;
     position: relative;
+    font-size: 40px; /* emoji size */
   }
   #mark {
     position: absolute;
@@ -17,39 +18,60 @@
     cursor: pointer;
     transition: transform 0.2s;
   }
+  #cake {
+    position: absolute;
+    pointer-events: none; /* so it doesn’t block Mark */
+  }
 </style>
 </head>
 <body>
 
 <img src="lizard.png" id="mark">
+<div id="cake" style="display:none;">🎂</div>
 
 <script>
   const mark = document.getElementById('mark');
+  const cake = document.getElementById('cake');
 
   const today = new Date();
   const day = today.getDate();
-  const month = today.getMonth(); // 0=Jan, 8=Sep, 9=Oct, 11=Dec
+  const month = today.getMonth(); // 0=Jan, 9=Oct, 11=Dec
 
-  if (day === 25 && month === 11) {
-    // 🎄 Christmas Day (December 25)
-    mark.src = "markmas.png";
-  } else if (day === 31 && month === 9) {
-    // 🎃 Halloween (October 31)
+  // 🎃 Halloween
+  if (day === 31 && month === 9) {
     mark.src = "markhalloween.png";
-  } else {
-    // Normal day
+  }
+  // 🎄 Christmas
+  else if (day === 25 && month === 11) {
+    mark.src = "markmas.png";
+  }
+  // 🎂 Mark's Birthday (just cake, Mark stays normal)
+  else if (day === 15 && month === 9) {
+    mark.src = "lizard.png";
+    cake.style.display = "block"; // show cake
+    // random starting position
+    cake.style.left = Math.random() * (window.innerWidth - 50) + "px";
+    cake.style.top = Math.random() * (window.innerHeight - 50) + "px";
+  }
+  else {
     mark.src = "lizard.png";
   }
 
   let x = 50, y = 50;
 
   function moveMark() {
-    const dx = Math.floor(Math.random() * 41) - 20; // -20 to 20
+    const dx = Math.floor(Math.random() * 41) - 20;
     const dy = Math.floor(Math.random() * 41) - 20;
     x = Math.max(0, Math.min(window.innerWidth - mark.width, x + dx));
     y = Math.max(0, Math.min(window.innerHeight - mark.height, y + dy));
     mark.style.left = x + 'px';
     mark.style.top = y + 'px';
+
+    // if it's birthday, cake follows Mark with some offset
+    if (day === 15 && month === 9) {
+      cake.style.left = (x + 150) + "px"; // 150px to the right
+      cake.style.top = (y - 50) + "px";  // 50px above
+    }
   }
 
   setInterval(moveMark, 500);
